@@ -26,13 +26,90 @@ router.get('/student-details/:name', function(req, res){
 
     let requestParams = req.params
 
-    // JSON strigify function helps to print an entire object
+//     // JSON strigify function helps to print an entire object
     // We can use any ways to print an object in Javascript, JSON stringify is one of them
     console.log("This is the request "+ JSON.stringify(requestParams))
     let studentName = requestParams.name
     console.log('Name of the student is ', studentName)
+    let deatils = studentName +" "+ studentName
     
-    res.send('Dummy response')
+    res.send(deatils)
 })
+// 1 st
+router.get ('/movies', function (req, res){
+  let movies=["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
+  console.log(movies)
+  res.send(movies)
+} )
+// 3rd problem
+router.get ('/kahani/:indexNumber', function (req, res){
+  let story=["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
+  let requestParams=req.params.indexNumber
+    let answer= story[requestParams]
+    if(requestParams <0|| requestParams>story.length){
+      res.send("plese enter valid value")
+      console.log("plese enter valid value")
 
+     }else{ res.send(answer)
+      console.log(answer) }
+     } )
+// 2nd problem
+ router.get ('/story/:indexNumber', function (req, res){
+  let story=["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
+
+    console.log(req.params) 
+    let len = story.length
+     len++
+     let item = story[req.params.indexNumber-1]
+     console.log(item)
+     res.send(item)
+  })
+
+//4th problem
+router.get ('/films', function (req, res){
+  let films=  [{ "id": 1,
+  "name": "The Shining"
+ }, {
+  'id': 2,
+  'name': 'Incendies'
+ }, {
+  'id': 3,
+  'name': 'Rang de Basanti'
+ }, {
+  'id': 4,
+  'name': 'Finding Nemo'
+ }]
+// let requestParams=req.params.films
+// let answer= films[requestParams]
+
+res.send(films)
+console.log(films)
+ })
+
+
+//not done
+
+ router.get ('/mmovi/:filmsId', function (req, res){
+  let films=  [{ "id": 1,
+  "name": "The Shining"
+ }, {
+  'id': 2,
+  'name': 'Incendies'
+ }, {
+  'id': 3,
+  'name': 'Rang de Basanti'
+ }, {
+  'id': 4,
+  'name': 'Finding Nemo'
+ }]
+ let requestParams=req.params.films
+ let answer= films[requestParams]
+ if(requestParams <0|| requestParams>films.length){
+  res.send("plese enter valid value")
+  console.log("plese enter valid value")
+
+
+res.send(answer)
+console.log(answer)
+ }})
 module.exports = router;
