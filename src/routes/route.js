@@ -93,7 +93,7 @@ router.get("/films/:filmId", function(req, res){
        //search for a film whose id matches with the id recevied in request
        for(let i = 0; i < films.length; i++){
            let film = films[i]
-           if(film.id == filmId) {
+           if(film.id === filmId) {
                //if there is a match return the response from here
                return res.send(film)
            }
@@ -103,5 +103,40 @@ router.get("/films/:filmId", function(req, res){
        res.send("The film id doesn't match any movie")
 })
 
+router.get ('/missingNumber',function (req ,res){
+  
+      let arr= [ 1,2,3,4,5,7,8,9]
+      let ab=0;
+      for( var i in arr){
+        ab=ab+arr[i];
+      }
+     // for( let i=0; i<arr.length; i++){
+let lastDigit= arr.pop()
+let abc=lastDigit * (lastDigit+1)/2
+let missNumber=abc-ab
+res.send({ missNumber})
+       // console.log(arr[i])
+        
+      }
+
+
+)
+
+router.get ('/Number',function (req ,res){
+  
+  let arr= [34,35,36,37,38,40]
+  let len=arr.length
+ 
+  let total=0;
+  for(var i in arr){
+    total+=arr[i];
+  }
+  
+ let firstDigit=arr[0]
+let lastDigit= arr.pop()
+let consecutiveSum=  (len+1) * (firstDigit+lastDigit)/2
+let missNumber=consecutiveSum-total
+res.send({ missNumber})
+})
 module.exports = router;
 // adding this comment for no reason
