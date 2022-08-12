@@ -36,6 +36,49 @@ router.get('/candidates/:canidatesName', function(req, res){
     res.send('Done')
 })
 
+let person=[{
+    name:"pk",
+    age:30,
+    votingStatus:false
+},
+
+{
+    name:"pk",
+    age:15,
+    votingStatus:false
+},
+{
+    name:"pk",
+    age:55,
+    votingStatus:false
+},
+{
+    name:"jk",
+    age:23,
+    votingStatus:false
+},
+{
+    name:"kr",
+    age:20,
+    votingStatus:false
+},
+{
+    name:"mn",
+    age:10,
+    votingStatus:false
+}]
+router.get('/Voting', function(req,res){
+        let data=req.query.inputage;
+        for(let i=0; i<person.length; i++){
+        let personAge=person[i].age
+        if( personAge>data||personAge>18){
+            person[i].votingStatus=true;
+            res.send({personAge})
+        }else{
+            res.send("age is to low")
+        }
+
+}})
 
 module.exports = router;
 // adding this comment for no reason
