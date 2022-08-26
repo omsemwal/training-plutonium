@@ -1,9 +1,18 @@
 
 const mid1= function ( req, res, next) {
-    req.falana= "hi there. i am adding something new to the req object"
-    console.log("Hi I am a middleware named Mid1")
+    let otherData=req.headers["isfreeappuser"]
+    if(!otherData){
+       return res.send("mandatory")
+    }
+        // res.send({otherData }) 
+    
     next()
 }
+
+//     req.falana= "hi there. i am adding something new to the req object"
+//     console.log("Hi I am a middleware named Mid1")
+//     next()
+// }
 
 const mid2= function ( req, res, next) {
     console.log("Hi I am a middleware named Mid2")
