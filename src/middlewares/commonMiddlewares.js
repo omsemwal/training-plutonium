@@ -15,9 +15,24 @@ const mid1= function ( req, res, next) {
 // }
 
 const mid2= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid2")
+
+ let otherData=req.headers["isfreeappuser"]
+ 
+ if(otherData){
+    if(otherData=='true')
+    req.body.isFreeAppUser='true'
+    if(otherData=='false')
+    req.body.isFreeAppUser='false'
     next()
+ }else{
+    return res.send({msg:'header is require'})
+ }
 }
+
+
+    // console.log("Hi I am a middleware named Mid2")
+    // next()
+
 
 const mid3= function ( req, res, next) {
     console.log("Hi I am a middleware named Mid3")

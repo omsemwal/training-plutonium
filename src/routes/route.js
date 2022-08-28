@@ -9,11 +9,11 @@ router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
 
-router.post("/createUsers",commonMW.mid1,UsersController.createUsers)
+router.post("/createUsers",commonMW.mid2,UsersController.createUsers)
 
  router.post("/createProduct", productController.createProduct)
 
- router.post("/createOrder",commonMW.mid1, orderController.createOrder)
+ router.post("/createOrder",orderController.createOrder)
 
  router.get("/getUsers",UsersController.getUsers)
 
