@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const userSchema = new mongoose.Schema( {
     firstName: String,
     lastName: String,
@@ -12,9 +11,11 @@ const userSchema = new mongoose.Schema( {
     password: String,
     gender: {
         type: String,
-        enum: ["male", "female", "other"]
+        enum: ["male", "female", "other"],
+       
     },
     age: Number,
-}, { timestamps: true });
-
+    isDeleted:{type:String,
+        default:false},
+},{ timestamps: true });
 module.exports = mongoose.model('User', userSchema)
