@@ -9,7 +9,6 @@ let getMemes = async function (req, res) {
             url: `https://api.imgflip.com/get_memes`
         }
         let result = await axios(options);
-        console.log(result)
         let data = result.data
         res.status(200).send({ msg: data, status: true })
     }
