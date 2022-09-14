@@ -3,31 +3,42 @@ const internModel=require("../models/internModel")
 
 
 const valid=function(value){
-    let r=/\D/
     if(typeof value=="undefined" || value==null)return false
-    if(typeof value=="string" && value.trim().length>0 && r.value)return true
+    if(typeof value=="string" && value.trim().length>0 )return true
     return false
+}
+const nameValidator=function(value){
+    return /^[a-zA-Z]+$/.test(value)
+}
+const fullNameValidator=function(value){
+    return /^[a-zA-z]+([\s]?[a-zA-z]+)*$/.test(value)
 }
 
 const createCollege=async function(req,res){
     try{
         const requestBody=req.body
         const requestQuery=req.query
-        if(!valid(requestQuery))
+        if(Object.keys(requestQuery).length>0)
             return res.status(400).send({status:false,msg:"invalid entry "})
-        if(valid(requestBody))
-            return res.send({status:false,msg:"data is required in request body"})
+        if(Object.keys(requestBody).length==0)
+            return res.status(400).send({status:false,msg:"data is required in request body"})
 
         if(Object.keys(requestBody).length>3)
             return res.status(400).send({status:false,msg:"invalid data entry inside request body"})
     
         const {name,fullName,logoLink}=requestBody
-        if(!valid(name))
-            return res.status(400).send({status:false,msg:"name is missing or invalid"})
-        if(!valid(fullName))
-            return res.status(400).send({status:false,msg:"fullName is missing or invalid"})
+        if(!name)
+            return res.status(400).send({status:false,msg:"name is required"})
+        if(!fullName)
+            return res.status(400).send({status:false,msg:"fullName is required"})
+        if(!logoLink)
+            return res.status(400).send({status:false,msg:"logoLink is required"})
+        if(!nameValidator(name))
+            return res.status(400).send({status:false,msg:"name is invalid"})
+        if(!fullNameValidator(fullName))
+            return res.status(400).send({status:false,msg:"fullName is invalid"})
         if(!valid(logoLink))
-            return res.status(400).send({status:false,msg:"logoLink is missing or invalid"})
+            return res.status(400).send({status:false,msg:"logoLink is invalid"})
         let college=await collegModel.findOne({name:name})
         if(college)
             return res.status(409).send({status:false,msg:"college is already exist"})
