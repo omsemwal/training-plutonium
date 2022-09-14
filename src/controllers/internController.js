@@ -25,14 +25,14 @@ const createIntern = async function(req,res) {
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Name validation <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
     
     let nameValidator = function(value) {
-        return (/^(?![\. ])[a-zA-Z\. ]+(?<! )$/.test(value))
+        return (/^[a-zA-Z]+$/.test(value))
     }
-    if(!nameValidator(name)) return res.status(400).send({status:false,msg:"Give a proper name of yours"})
+    if(!nameValidator(name)) return res.status(400).send({status:false,msg:"Give a propper name of yours"})
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> mobile validation <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
     let mobileValidator = function(mob) {
-        return /^[6-9]{1}[0-9]{9}$/.test(mob)
+        return /^[6-9]\d{9}$/gi.test(mob)
     }
     if(!mobileValidator(mobile)) return res.status(400).send({status:false,msg:"Give a propper mobile number"})
     let mobileNo = await internModel.findOne({mobile:mobile})
