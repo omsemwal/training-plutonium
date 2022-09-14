@@ -6,19 +6,9 @@ const {createCollege,functionupInterns} = require("../controllers/collegeControl
 
 
 
-
-
-router.post("/functionup/interns",createIntern)
 router.post("/functionup/colleges",createCollege)
+router.post("/functionup/interns",createIntern)
 router.get("/functionupInterns",functionupInterns)
-
-
-
-
-
-
-
-
 
 
 
