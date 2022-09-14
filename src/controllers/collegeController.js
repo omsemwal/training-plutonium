@@ -58,21 +58,20 @@ exports.createCollege = async function (req, res) {
 
 const functionupInterns = async function (req, res) {
     try {
-        let save = req.query.name
+        let save = req.query.collegeName
         if (!save) { return res.status(400).send({ status: false, msg: "plese enter data" }) }
 
         let data = await collegModel.findOne({ name: save }).select({ name: 1, fullName: 1, logoLink: 1, _id: 1 })
         if (!data) { return res.status(404).send({ status: false, msg: "college not found" }) }
 
         let saveData = await internModel.find({ collegeId: data._id }).select({ name: 1, mobile: 1, email: 1 })
-
         let obj = {
             name: data.name,
             fullName: data.fullName,
             logoLink: data.logoLink,
             interns: saveData
         }
-        return res.status(200).send({ status: true, collegedetails: obj })
+        return res.status(200).send({ status: true, collegedetails: {data : obj }})
     }
     catch (err) {
         res.status(500).send({ status:false,msg: err.message });
