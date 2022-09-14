@@ -44,11 +44,15 @@ const functionupInterns=async function (req,res){
    let save=req.query
     if(!save){return res.status(400).send({status:false,msg:"plese enter data"})}
  
-    let data =await  collegModel.find({name:save})
-    if(data.length==0){return res.status(404).send({status:false,msg:"college not found"})}
+    let data =await  collegModel.findOne({name:save})
+    if(!data){return res.status(404).send({status:false,msg:"college not found"})}
  
-    let saveData=await internModel.find().populate('collegeId')
-     return res.status(200).send({status:true,msg:saveData})
+    let saveData=await internModel.find({_id:data._id})
+
+    data["interns"] = saveData
+
+
+     return res.status(200).send({status:true,msg:data})
     }
      catch (err) {
     console.log(err.message);
