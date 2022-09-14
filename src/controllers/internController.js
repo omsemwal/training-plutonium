@@ -8,7 +8,7 @@ const createIntern = async function(req,res) {
     try{
     let data = req.body
     let paramsData = req.query
-    let {name, mobile, email, collegeName,collegeId} = data
+    let {name, mobile, email,collegeId} = data
 
     if(Object.keys(data).length==0) return res.status.send({status:false,msg:"please provide all the details"})
     if(Object.keys(paramsData).length>0) return res.status.send({status:false,msg:"please provide the details in body"})
@@ -17,15 +17,14 @@ const createIntern = async function(req,res) {
     if (!name) return res.status(400).send({status:false,msg:"name is required"})
     if (!mobile) return res.status(400).send({status:false,msg:"mobile is required"})
     if (!email) return res.status(400).send({status:false,msg:"email is required"})
-    if (!collegeName) return res.status(400).send({status:false,msg:"collegename is required"})
     if (!collegeId) return res.status(400).send({status:false,msg:"collegeId is required"})
 
-    if(!mongoose.Types.ObjectId.isvalid(collegeId)) return res.status(400).send({status:false,msg:"Please provide a valid collegeId"})
+    if(!mongoose.Types.ObjectId.isValid(collegeId)) return res.status(400).send({status:false,msg:"Please provide a valid collegeId"})
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Name validation <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
     
     let nameValidator = function(value) {
-        return (/^[a-zA-Z]+$/.test(value))
+        return (/^[a-zA-Z]+([\s]?[a-zA-Z]+)*$/.test(value))
     }
     if(!nameValidator(name)) return res.status(400).send({status:false,msg:"Give a propper name of yours"})
 
