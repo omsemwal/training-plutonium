@@ -65,7 +65,6 @@ const functionupInterns = async function (req, res) {
         if (!data) { return res.status(404).send({ status: false, msg: "college not found" }) }
 
         let saveData = await internModel.find({ collegeId: data._id }).select({ name: 1, mobile: 1, email: 1 })
-        // let interns = saveData
 
         let obj = {
             name: data.name,
@@ -76,8 +75,7 @@ const functionupInterns = async function (req, res) {
         return res.status(200).send({ status: true, collegedetails: obj })
     }
     catch (err) {
-        console.log(err.message);
-        res.status(500).send({ error: err.message });
+        res.status(500).send({ status:false,msg: err.message });
     }
 }
 
