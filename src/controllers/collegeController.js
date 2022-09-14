@@ -11,7 +11,7 @@ const nameValidator=function(value){
     return /^[a-zA-Z]+$/.test(value)
 }
 const fullNameValidator=function(value){
-    return /^[a-zA-z]+([\s]?[a-zA-z]+)*$/.test(value)
+    return /^[a-zA-z]+([\s]?,?[a-zA-z]+)*$/.test(value)
 }
 
 const createCollege=async function(req,res){
@@ -42,7 +42,7 @@ const createCollege=async function(req,res){
         let college=await collegModel.findOne({name:name})
         if(college)
             return res.status(409).send({status:false,msg:"college is already exist"})
-        let result=await collegModel.creat(requestBody)
+        let result=await collegModel.create(requestBody)
         res.status(201).send({status:true,msg:"college is registerd",data:result}) 
 
     }catch(err){
