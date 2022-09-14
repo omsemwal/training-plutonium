@@ -1,4 +1,5 @@
 const collegModel=require("../models/collegeModel")
+const internModel=require("../models/internModel")
 
 
 const valid=function(value){
@@ -37,6 +38,24 @@ const createCollege=async function(req,res){
         res.status(500).send({status:false,msg:err.message})
     }
 }
+
+const functionupInterns=async function (req,res){
+    try{
+   let save=req.query
+    if(!save){return res.status(400).send({status:false,msg:"plese enter data"})}
+ 
+    let data =await  collegModel.find({name:save})
+    if(data.length==0){return res.status(404).send({status:false,msg:"college not found"})}
+ 
+    let saveData=await internModel.find().populate('collegeId')
+     return res.status(200).send({status:true,msg:saveData})
+    }
+     catch (err) {
+    console.log(err.message);
+    res.status(500).send({ error: err.message });
+ }
+ }
+ module.exports.functionupInterns=functionupInterns
 
 
 module.exports.createCollege = createCollege
