@@ -19,5 +19,5 @@ const collegeSchema = new mongoose.Schema({
         default:false
     }},{timestamps:true})
 
-    module.exports = mongoose.Model("college",collegeSchema)
+    module.exports = mongoose.model("college",collegeSchema)
 
