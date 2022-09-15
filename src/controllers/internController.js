@@ -15,16 +15,16 @@ let emailValidator = function (mail) {
 
 const createIntern = async function (req, res) {
     try {
-        let data = req.body
-        let paramsData = req.query
-        let { name, mobile, email, collegeId } = data
+        let requestBody = req.body
+        let requestQuery = req.query
+        let { name, mobile, email, collegeId } = requestBody
 
-        if (Object.keys(data).length == 0)
+        if (Object.keys(requestBody).length == 0)
             return res.
                 status(400).
                 send({ status: false, msg: "please provide all the details" })
 
-        if (Object.keys(paramsData).length > 0)
+        if (Object.keys(requestQuery).length > 0)
             return res.
                 status(400).
                 send({ status: false, msg: "invalid entry" })
@@ -50,42 +50,49 @@ const createIntern = async function (req, res) {
                 status(400).
                 send({ status: false, msg: "collegeId is required" })
 
+/************************************* Name Validation ***************************************/                
+
         if (!nameValidator(name))
             return res.
                 status(400).
                 send({ status: false, msg: "Give a valid Name" })
 
+/****************************************** Mobile No Validation ***************************************/
         if (!mobileValidator(mobile))
             return res.
                 status(400).
                 send({ status: false, msg: "Give a Valid mobile number" })
 
+/************************************** EmailId Validation **********************************************/
         if (!emailValidator(email))
             return res.
                 status(400).
                 send({ status: false, msg: "Please enter your correct email id" })
 
+/**************************************** CollegeId Validation ***********************************************************************/
         if (!mongoose.Types.ObjectId.isValid(collegeId))
             return res.
                 status(400).
                 send({ status: false, msg: "Please provide a valid collegeId" })
 
-        let m = await internModel.findOne({ mobile: mobile })
-        if (m)
+/********************************************* Unickness of MobileNo checking ************************************************/                
+        let mob = await internModel.findOne({ mobile: mobile })
+        if (mob)
             return res.
                 status(409).
                 send({ status: false, msg: "This Mobile no is alreday exist" })
-
+/************************************************* Unickness of EmailId checking **********************************/
         let emailId = await internModel.findOne({ email: email })
         if (emailId)
             return res.
                 status(409).
                 send({ status: false, msg: "The emailId is already in use please provide anothe emailId" })
 
+/******************************************** Creation of Intern **************************************************/                
         let internData = await internModel.create(data)
-        res.
+        return res.
             status(201).
-            send({ status: true, msg: "Intern created successfully", data: internData })
+                send({ status: true, msg: "Intern created successfully", data: internData })
     } catch (error) {
         res.
             status(500).

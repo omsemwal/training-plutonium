@@ -31,12 +31,12 @@ exports.createCollege = async function (req, res) {
                 status(400).
                     send({ status: false, msg: "data is required in request body" })
 
-        if (Object.keys(requestBody).length > 3)
+        if (Object.keys(requestBody).length > 4)
             return res.
                 status(400).
                     send({ status: false, msg: "invalid data entry inside request body" })
 
-        const { name, fullName, logoLink } = requestBody
+        const { name, fullName, logoLink ,isDeleted} = requestBody
         if (!name)
             return res.
                 status(400).
@@ -49,29 +49,46 @@ exports.createCollege = async function (req, res) {
             return res.
                 status(400).
                     send({ status: false, msg: "logoLink is required" })
+
+/************************************* Name Validation ***********************************/        
         if (!nameValidator(name))
             return res.
                 status(400).
                     send({ status: false, msg: "name is invalid" })
+/**************************************FullName Validation ***********************************/        
+        
         if (!fullNameValidator(fullName))
             return res.
                 status(400).
                     send({ status: false, msg: "fullName is invalid" })
-        if (!valid(logoLink))
+/************************************* logoLink Validation ***************************************/
+
+        if (!logoValidator(logoLink))
             return res.
                 status(400).
-                    send({ status: false, msg: "logoLink is invalid" })
-        if (!logoValidator(logoLink)) {
+                    send({ status: false, msg: "logoLink validation invalid" })
+/************************************* isDeleted Validation if this key is Present in Input then ***********************************************/
+
+        if(typeof isDeleted!="Boolean")
             return res.
                 status(400).
-                    send({ status: false, msg: "logoLink validation failed" })
-        }
+                    send({status:false,msg:"invalid entry of isDeleted"})
+
+/**************************************** Unickness Checking of Name *****************************************/
         let college = await collegModel.findOne({ name: name })
         if (college)
             return res.
                 status(409).
                     send({ status: false, msg: "college is already exist" })
-        let result = await collegModel.create(requestBody)
+
+/****************************************** College Creation ***********************************************/                    
+        let obj={
+            name:name.trim(),
+            fullName:fullName.trim(),
+            logoLink:logoLink.trim(),
+            isDeleted:isDeleted.trim()
+        }
+        let result = await collegModel.create(obj)
         res.
             status(201).
                 send({ status: true, msg: "college is registerd", data: result })
@@ -109,7 +126,7 @@ const functionupInterns = async function (req, res) {
             logoLink: data.logoLink,
             interns: saveData
         }
-        return res.
+        res.
             status(200).
                 send({ status: true, collegedetails: {data:obj }})
     }
