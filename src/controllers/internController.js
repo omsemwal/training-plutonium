@@ -30,7 +30,7 @@ const createIntern = async function (req, res) {
                 status(400).
                 send({ status: false, msg: "invalid entry" })
 
-        if (Object.keys(requestBody).length > 4)
+        if (Object.keys(requestBody).length > 3)
             return res.
                 status(400).
                 send({ status: false, msg: "invalid data entry inside request body" })
