@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose")
+const collegeModel = require("../models/collegeModel")
 const internModel = require("../models/internModel")
 
 let nameValidator = function (value) {
@@ -17,7 +18,7 @@ const createIntern = async function (req, res) {
     try {
         let requestBody = req.body
         let requestQuery = req.query
-        let { name, mobile, email, collegeId } = requestBody
+        let { name, email, mobile, collegeId } = requestBody
 
         if (Object.keys(requestBody).length == 0)
             return res.
@@ -28,6 +29,11 @@ const createIntern = async function (req, res) {
             return res.
                 status(400).
                 send({ status: false, msg: "invalid entry" })
+
+        if (Object.keys(requestBody).length > 4)
+            return res.
+                status(400).
+                send({ status: false, msg: "invalid data entry inside request body" })
 
 
         if (!name)
@@ -50,59 +56,66 @@ const createIntern = async function (req, res) {
                 status(400).
                 send({ status: false, msg: "collegeId is required" })
 
-/************************************* Name Validation ***************************************/                
+        /************************************* Name Validation ***************************************/
 
         if (!nameValidator(name))
             return res.
                 status(400).
                 send({ status: false, msg: "Give a valid Name" })
+        /************************************** EmailId Validation **********************************************/
 
-/****************************************** Mobile No Validation ***************************************/
-        if (!mobileValidator(mobile))
-            return res.
-                status(400).
-                send({ status: false, msg: "Give a Valid mobile number" })
-
-/************************************** EmailId Validation **********************************************/
         if (!emailValidator(email))
             return res.
                 status(400).
                 send({ status: false, msg: "Please enter your correct email id" })
 
-/**************************************** CollegeId Validation ***********************************************************************/
+        /****************************************** Mobile No Validation ***************************************/
+
+        if (!mobileValidator(mobile))
+            return res.
+                status(400).
+                send({ status: false, msg: "Give a Valid mobile number" })
+
+        /**************************************** CollegeId Validation ***********************************************************************/
         if (!mongoose.Types.ObjectId.isValid(collegeId))
             return res.
                 status(400).
                 send({ status: false, msg: "Please provide a valid collegeId" })
 
-/********************************************* Unickness of MobileNo checking ************************************************/                
-        let mob = await internModel.findOne({ mobile: mobile })
+        /************************************************* Uniqueness of EmailId checking **********************************/
+        let emailId = await internModel.findOne({ email: email.trim() })
+        if (emailId)
+            return res.
+                status(409).
+                send({ status: false, msg: "The emailId is already in use please provide another emailId" })
+
+        /********************************************* Uniqueness of MobileNo checking ************************************************/
+        let mob = await internModel.findOne({ mobile: mobile.trim() })
         if (mob)
             return res.
                 status(409).
                 send({ status: false, msg: "This Mobile no is alreday exist" })
-/************************************************* Unickness of EmailId checking **********************************/
-        let emailId = await internModel.findOne({ email: email })
-        if (emailId)
-            return res.
-                status(409).
-                send({ status: false, msg: "The emailId is already in use please provide anothe emailId" })
 
-/******************************************** Creation of Intern **************************************************/                
-        let obj={
-            name:name.trim(),
-            mobile:mobile.trim(),
-            email:email.trim(),
-            collegeId:collegeId.trim()
+        /******************************************** Creation of Intern **************************************************/
+        let data = await collegeModel.findById(collegeId)
+        if (!data)
+            return res.
+                status(404).
+                send({ status: false, msg: "college is not exsist" })
+        let obj = {
+            name: name.trim(),
+            mobile: mobile.trim(),
+            email: email.trim(),
+            collegeId: collegeId
         }
         let internData = await internModel.create(obj)
         return res.
             status(201).
-                send({ status: true, msg: "Intern created successfully", data: internData })
+            send({ status: true, msg: "Intern created successfully", data: internData })
     } catch (error) {
         return res.
             status(500).
-                send({ status: false, msg: error.message })
+            send({ status: false, msg: error.message })
     }
 }
 
