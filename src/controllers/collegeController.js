@@ -2,16 +2,11 @@ const collegModel = require("../models/collegeModel")
 const internModel = require("../models/internModel")
 
 
-const valid = function (value) {
-    if (typeof value == "undefined" || value == null) return false
-    if (typeof value == "string" && value.trim().length > 0) return true
-    return false
-}
 const nameValidator = function (value) {
-    return /^[a-zA-Z]+$/.test(value)
+    return /^[\s]*[a-zA-Z]+[\s]*$/.test(value)
 }
 const fullNameValidator = function (value) {
-    return /^[a-zA-z]+([\s\,]*[a-zA-z]+)*$/.test(value)
+    return /^[\s]*[a-zA-z]+([\s\,\-]*[a-zA-z]+)*[\s]*$/.test(value)
 }
 const logoValidator = function (value) {
     return /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(value)
@@ -36,7 +31,7 @@ exports.createCollege = async function (req, res) {
                 status(400).
                     send({ status: false, msg: "invalid data entry inside request body" })
 
-        const { name, fullName, logoLink ,isDeleted} = requestBody
+        const { name, fullName, logoLink } = requestBody
         if (!name)
             return res.
                 status(400).
@@ -67,12 +62,6 @@ exports.createCollege = async function (req, res) {
             return res.
                 status(400).
                     send({ status: false, msg: "logoLink validation invalid" })
-/************************************* isDeleted Validation if this key is Present in Input then ***********************************************/
-
-        if(typeof isDeleted!="Boolean")
-            return res.
-                status(400).
-                    send({status:false,msg:"invalid entry of isDeleted"})
 
 /**************************************** Unickness Checking of Name *****************************************/
         let college = await collegModel.findOne({ name: name })
@@ -85,11 +74,10 @@ exports.createCollege = async function (req, res) {
         let obj={
             name:name.trim(),
             fullName:fullName.trim(),
-            logoLink:logoLink.trim(),
-            isDeleted:isDeleted.trim()
+            logoLink:logoLink.trim()
         }
         let result = await collegModel.create(obj)
-        res.
+        return res.
             status(201).
                 send({ status: true, msg: "college is registerd", data: result })
 
@@ -102,18 +90,21 @@ exports.createCollege = async function (req, res) {
 
 const functionupInterns = async function (req, res) {
     try {
-        let save = req.query.collegeName
+        let requestQuery = req.query.collegeName
         let requestBody=req.body
         if(Object.keys(requestBody).length>0)
             return res.
                 status(400).
                     send({status:false,msg:"invalid data entry"})
-        if (!save) 
+        if (!requestQuery) 
             return res.
                 status(400).
                     send({ status: false, msg: "please enter the collegeName" }) 
-
-        let data = await collegModel.findOne({ name: save }).select({ name: 1, fullName: 1, logoLink: 1, _id: 1 })
+        if(Object.keys(requestQuery).length>1)
+            return res.
+                status(400).
+                    send({status:false,msg:"invalid request"})
+        let data = await collegModel.findOne({ name: requestQuery }).select({ name: 1, fullName: 1, logoLink: 1, _id: 1 })
         if (!data)
             return res.
                 status(404).

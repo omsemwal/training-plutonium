@@ -2,15 +2,15 @@ const { default: mongoose } = require("mongoose")
 const internModel = require("../models/internModel")
 
 let nameValidator = function (value) {
-    return (/^[a-zA-Z]+([\s]?[a-zA-Z]+)*$/.test(value))
+    return (/^[\s]*[a-zA-Z]+([\s]?[a-zA-Z]+)*[\s]*$/.test(value))
 }
 
 let mobileValidator = function (mob) {
-    return /^[6-9]\d{9}$/gi.test(mob)
+    return /^[\s]*[6-9]\d{9}[\s]*$/gi.test(mob)
 }
 
 let emailValidator = function (mail) {
-    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+    return (/^[\s]*\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+[\s]*$/.test(mail))
 }
 
 const createIntern = async function (req, res) {
@@ -89,14 +89,20 @@ const createIntern = async function (req, res) {
                 send({ status: false, msg: "The emailId is already in use please provide anothe emailId" })
 
 /******************************************** Creation of Intern **************************************************/                
-        let internData = await internModel.create(data)
+        let obj={
+            name:name.trim(),
+            mobile:mobile.trim(),
+            email:email.trim(),
+            collegeId:collegeId.trim()
+        }
+        let internData = await internModel.create(obj)
         return res.
             status(201).
                 send({ status: true, msg: "Intern created successfully", data: internData })
     } catch (error) {
-        res.
+        return res.
             status(500).
-            send({ status: false, msg: error.message })
+                send({ status: false, msg: error.message })
     }
 }
 
