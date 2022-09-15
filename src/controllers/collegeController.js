@@ -96,7 +96,7 @@ const functionupInterns = async function (req, res) {
         if (Object.keys(requestBody).length > 0)
             return res.
                 status(400).
-                send({ status: false, msg: "invalid data entry" })
+                send({ status: false, msg: "invalid data entry in requestBody" })
         if (!requestQuery || !requestQuery.collegeName)
             return res.
                 status(400).
