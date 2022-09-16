@@ -27,12 +27,12 @@ const createCollege = async function (req, res) {
                 status(400).
                 send({ status: false, msg: "data is required in request body" })
 
-        if (Object.keys(requestBody).length > 3)
+        if (Object.keys(requestBody).length > 4)
             return res.
                 status(400).
                 send({ status: false, msg: "invalid data entry inside request body" })
 
-        const { name, fullName, logoLink } = requestBody
+        const { name, fullName, logoLink, isDeleted } = requestBody
         if (!name)
             return res.
                 status(400).
@@ -63,6 +63,9 @@ const createCollege = async function (req, res) {
             return res.
                 status(400).
                 send({ status: false, msg: "logoLink validation invalid" })
+        if (isDeleted)
+            if (isDeleted != false)
+                return res.status(400).send({ status: false, msg: "invalid request" })
 
         /**************************************** Uniqueness Checking of collegeName *****************************************/
         let college = await collegModel.findOne({ name: name.trim() })

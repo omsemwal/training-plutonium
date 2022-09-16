@@ -84,6 +84,7 @@ const createIntern = async function (req, res) {
                 status(400).
                 send({ status: false, msg: "Please enter your correct email id" })
 
+
         /********************************************* Uniqueness of MobileNo checking ************************************************/
         let mob = await internModel.findOne({ mobile: mobile.trim() })
         if (mob)
