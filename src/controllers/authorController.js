@@ -15,29 +15,19 @@ const isValidTitle = function(title)
          return title
     }
 
-//const isvalidateBody = function(body)
- //   {
-
-       // return Object.keys(body).length>0
- //   }
-
 const createAuthor = async function (req, res) {
     try {
         data = req.body
 
-     //   if(isvalidateBody(data))
-     //   {
-      //      res.status(400).send({status:false,message:"Invalid parameters"})
-      //  }
 
-        const { fName, lName, title, email, password } = data
-        if (!isValid(fName)) { return res.status(400).send({ status: false, msg: "fName is required" }) }
+        const { fname, lname, title, email, password } = data
+        if (!isValid(fname)) { return res.status(400).send({ status: false, msg: "fname is required" }) }
        
-        if (!isValid(lName)) { return res.status(400).send({ status: false, msg: "lName is required" }) }
+        if (!isValid(lname)) { return res.status(400).send({ status: false, msg: "lname is required" }) }
         
         if (!isValid(title)) { return res.status(400).send({ status: false, msg: "title is required" }) }
           
-        if(isValidTitle(title)){ return res.status(400).send({ status: false, msg: "title should be Mr,Mrs,Miss"}) }
+        // if(isValidTitle(title)){ return res.status(400).send({ status: false, msg: "title should be Mr,Mrs,Miss"}) }
 
 
         if (!isValid(email)) { return res.status(400).send({ status: false, msg: "email is required" }) }

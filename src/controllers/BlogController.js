@@ -11,28 +11,28 @@ const isValid = function (check) {
     return true
 }
  
-const isvalidateBody = function(body)
-{
-    return Object.keys(req).length>0
-}
+// const isvalidateBody = function(body)
+// {
+//     return Object.keys(req).length>0
+// }
 
-const isvalidObjectId = function(objectId)
-{
-return mongoose.Types.ObjectId.isValid(objectId)
-}
+// const isvalidObjectId = function(objectId)
+// {
+// return mongoose.Types.ObjectId.isValid(objectId)
+// }
 
 const createBlog = async function (req, res) {
     try {
         let data = req.body
         
-        if(isvalidateBody(data))
-        {
-            res.status(400).send({status:false,message:"Invalid parameters"})
-        }
+        // if(isvalidateBody(data))
+        // {
+        //     res.status(400).send({status:false,message:"Invalid parameters"})
+        // }
         const {title,body,authorId,tags,category,subCategory,isPublished} = data
 
-        if (!isValidauthorId) {
-            const check = await authormodel.find(data.author_id)
+        if(authorId) {
+            const check = await authormodel.findById(authorId)
             if (check) {
 
               if (!isValid(title)) { return res.status(400).send({ status: false, msg: "title is required" }) }
@@ -42,7 +42,7 @@ const createBlog = async function (req, res) {
               if (!isValidObjectId(authorId)) { return res.status(400).send({ status: false, msg: "authorId is not valid" }) }
                
               if (!isValid(category)) { return res.status(400).send({ status: false, msg: "category is required" }) }
-               
+              
               const author= await authormodel.findById(authorId)
              if(!author)
              {
@@ -103,14 +103,6 @@ const updateBlog = async function(req, res)
             return res.status(400).send({ status: false, msg: "blogId is incorrect" })
         }
        
-        if (!isValid(title)) { return res.status(400).send({ status: false, msg: "title is required" }) }
-                
-        if (!isValid(body)) { return res.status(400).send({ status: false, msg: "body is required" }) }              
-     
-        if (!isValid(category)) { return res.status(400).send({ status: false, msg: "category is required" }) }
-        
-        if (!isValid(subcategory)) { return res.status(400).send({ status: false, msg: "category is required" }) }
-      
         
 
         let changeBlog = await blogModel.findByIdAndUpdate({ _id: blogId }, { $addToSet: { tags: tags, subCategory: subCategory }, $set: { title: title, body: body, category: category, isPublished: true, publishedAt: Date.now() } }, { new: true })
@@ -166,7 +158,7 @@ const deleteBlogsquery = async function (req, res) {
 
        else {  
            let blog = await blogModel.find({$or:[{authorId,category,subCategory,tags,isPublished}]})  
-           let updateData = await blogModel.updateMany(blog, { $set: { isDeleted: true ,deletedAt:Date.now(),isPublished:false,publishedAt:null} },{new:true})
+           let updateData = await blogModel.updateMany(blog, { $set: {isDeleted:true,deletedAt:Date.now(),isPublished:false,publishedAt:null} },{new:true})
 
            res.status(201).send({ status: true, msg: updateData })
        }

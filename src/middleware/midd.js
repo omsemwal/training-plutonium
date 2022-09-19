@@ -53,7 +53,8 @@ const AuthorisationDeleteQuery = async function (req, res, next) {
         if(!token) { return res.status(401).send({ status: false, msg: "token must be present" }) }
 
         let decodeToken =jwt.verify(token,"functionupiswaywaycoolHariomSemwal")
-   
+        console.log(decodeToken.id)
+        console.log(req.query.authorId)
         if(decodeToken.id===req.query.authorId) {
 
              next()

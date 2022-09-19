@@ -11,7 +11,7 @@ router.get("/test-me", function (req, res) {
 
 router.post("/createAuthor", Author.createAuthor)
 router.get("/GetAuthor", Author.getAuthorsData)
-router.get("/login", Author.login)
+router.post("/login", Author.login)
 router.post("/blogs", middle.authorAuthorisationBody, Blog.createBlog)
 router.get("/blogs", middle.authentication, Blog.getBlogsData)
 router.put("/blogs/:blogId", middle.authentication, middle.blogAuthorisation, Blog.updateBlog,)
