@@ -80,7 +80,7 @@ const createCollege = async function (req, res) {
             fullName: fullName.trim(),
             logoLink: logoLink.trim()
         }
-        let result = await collegModel.create(obj)
+        let result =await collegModel.create(obj)
         return res.
             status(201).
             send({ status: true, msg: "college is registerd", data: result })
