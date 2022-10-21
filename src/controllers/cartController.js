@@ -73,7 +73,7 @@ const createCart = async function (req, res) {
                     cart.totalPrice = totalPrice
 
                     cart.save()
-                    return res.status(200).send({ status: true, message: "Success", data: cart })
+                    return res.status(201).send({ status: true, message: "Success", data: cart })
                 }
             }
             let sum = 0
@@ -87,7 +87,7 @@ const createCart = async function (req, res) {
             let obj = { totalPrice: totalPrice, totalItems: sum, userId: userId, items: items }
             let updatedData = await cartModel.findOneAndUpdate({ _id: cartId }, obj, { new: true })
 
-            res.status(200).send({ status: true, message: "Success", data: updatedData })
+            res.status(201).send({ status: true, message: "Success", data: updatedData })
         }
 
     } catch (err) {
@@ -109,7 +109,7 @@ const updateCart = async function (req, res) {
 
         if (!mongoose.isValidObjectId(cartId)) return res.status(400).send({ status: false, message: "Please enter valid cartId!" })
 
-        let findCart = await cartModel.findOne({ cartId: cartId })
+        let findCart = await cartModel.findById(cartId)
         if (!findCart) { return res.status(404).send({ status: false, message: "Cart Id mot found in DB! " }) }
 
         let cart = await cartModel.findOne({ userId: userId })
@@ -208,7 +208,7 @@ const getCartDetails = async function (req, res) {
         const findCartUser = await cartModel.findOne({ userId })
         if (!findCartUser) { return res.status(404).send({ status: false, message: `${userId}cart not found` }) }
 
-        res.status(200).send({ status: true, message: " Cart Details", data: findCartUser })
+        res.status(200).send({ status: true, message: " Sucess", data: findCartUser })
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message });
     }
@@ -244,189 +244,4 @@ const deleteCart = async function (req, res) {
 
 
 module.exports = { createCart, updateCart, getCartDetails, deleteCart }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
