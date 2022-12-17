@@ -117,7 +117,7 @@ const getProduct = async function (req, res) {
                 if (name) {
                     if (!isValid(name)) { return res.status(400).send({ status: false, message: " product name is not valid" }) }
                     const titleName = name.replace(/\s{2, }/g, ' ').trim()
-                    filter["title"] = { $regex: titleName, $options: "i" } /// doubt
+                    filter["title"] = { $regex: titleName, $options: "i" } 
                 }
             }
             if (priceGreaterThan || priceGreaterThan === "") {

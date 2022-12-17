@@ -27,7 +27,7 @@ const createCart = async function (req, res) {
 
         if (!cartId) {
             let cart = await cartModel.findOne({ userId: userId })
-            if (cart) return res.status(400).send({ status: false, message: "Enter the Cart Id" })
+            if (!cart) return res.status(400).send({ status: false, message: "Enter the Cart Id" })
             if (!productId) return res.status(400).send({ status: false, message: "Enter the Product Id" })
 
             var isValid = mongoose.Types.ObjectId.isValid(productId)

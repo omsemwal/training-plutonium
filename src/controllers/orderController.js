@@ -107,7 +107,7 @@ const updateOrder = async function (req, res) {
         if (!isEmpty(status)) { return res.status(400).send({ status: false, message: "status must be parsent" }) }
 
         if (status) {
-            if (!["pending", "completed", "cancled"].includes(status)) {
+            if (![ "completed", "cancled"].includes(status)) {
                 return res.status(400).send({ status: false, message: "status must be ['completed', 'cancled']" })
             }
         }
